@@ -145,7 +145,13 @@ public class CommandWrapperBuilder {
         this.href = "/offices/template";
         return this;
     }
-
+    public CommandWrapperBuilder createAddress(Long officeId) {
+        this.actionName = "CREATE";
+        this.entityName = "ADDRESS";
+        this.entityId = officeId ;
+        this.href = "/offices/"+officeId+"addresses";
+        return this;
+    }
     public CommandWrapperBuilder updateOffice(final Long officeId) {
         this.actionName = "UPDATE";
         this.entityName = "OFFICE";

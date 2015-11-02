@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@CommandType(entity = "OFFICE", action = "CREATE")
+@CommandType(entity = "OFFICE", action = "CREATE")//class for execution command
 public class CreateOfficeCommandHandler implements NewCommandSourceHandler {
 
     private final OfficeWritePlatformService writePlatformService;

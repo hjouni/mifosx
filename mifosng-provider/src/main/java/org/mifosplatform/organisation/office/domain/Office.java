@@ -34,29 +34,32 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
         @UniqueConstraint(columnNames = { "external_id" }, name = "externalid_org") })
 public class Office extends AbstractPersistable<Long> {
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)//all the info of office
     @JoinColumn(name = "parent_id")
     private final List<Office> children = new LinkedList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
-    private Office parent;
+    private Office parent; //another property of Office cause the parent ID
 
-    @Column(name = "name", nullable = false, length = 100)
+    @Column(name = "name", nullable = false, length = 100) //hibernate property
     private String name;
 
     @Column(name = "hierarchy", nullable = true, length = 50)
     private String hierarchy;
 
     @Column(name = "opening_date", nullable = false)
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.DATE) //identify a date in hibernate
     private Date openingDate;
 
     @Column(name = "external_id", length = 100)
     private String externalId;
+    
+    @Column(name = "address",nullable = false, length = 100)
+    private String address;
 
-    public static Office headOffice(final String name, final LocalDate openingDate, final String externalId) {
-        return new Office(null, name, openingDate, externalId);
+    public static Office headOffice(final String name, final LocalDate openingDate, final String externalId, final String address) {
+        return new Office(null, name, openingDate, externalId, address);
     }
 
     public static Office fromJson(final Office parentOffice, final JsonCommand command) {
@@ -64,7 +67,8 @@ public class Office extends AbstractPersistable<Long> {
         final String name = command.stringValueOfParameterNamed("name");
         final LocalDate openingDate = command.localDateValueOfParameterNamed("openingDate");
         final String externalId = command.stringValueOfParameterNamed("externalId");
-        return new Office(parentOffice, name, openingDate, externalId);
+        final String address = command.stringValueOfParameterNamed("address");
+        return new Office(parentOffice, name, openingDate, externalId,address);
     }
 
     protected Office() {
@@ -72,9 +76,10 @@ public class Office extends AbstractPersistable<Long> {
         this.parent = null;
         this.name = null;
         this.externalId = null;
+        this.address=null;
     }
 
-    private Office(final Office parent, final String name, final LocalDate openingDate, final String externalId) {
+    private Office(final Office parent, final String name, final LocalDate openingDate, final String externalId,final String address) {
         this.parent = parent;
         this.openingDate = openingDate.toDateTimeAtStartOfDay().toDate();
         if (parent != null) {
@@ -90,6 +95,11 @@ public class Office extends AbstractPersistable<Long> {
             this.externalId = externalId.trim();
         } else {
             this.externalId = null;
+        }
+        if (StringUtils.isNotBlank(address)) {
+            this.address = address.trim();
+        } else {
+            this.address = null;
         }
     }
 
@@ -130,6 +140,12 @@ public class Office extends AbstractPersistable<Long> {
             actualChanges.put(nameParamName, newValue);
             this.name = newValue;
         }
+        final String AddressName = "address";
+        if (command.isChangeInStringParameterNamed(AddressName, this.address)) {
+            final String newValue = command.stringValueOfParameterNamed(AddressName);
+            actualChanges.put(AddressName, newValue);
+            this.address = newValue;
+        }
 
         final String externalIdParamName = "externalId";
         if (command.isChangeInStringParameterNamed(externalIdParamName, this.externalId)) {
@@ -140,6 +156,8 @@ public class Office extends AbstractPersistable<Long> {
 
         return actualChanges;
     }
+    
+    
 
     public boolean isOpeningDateBefore(final LocalDate baseDate) {
         return getOpeningLocalDate().isBefore(baseDate);
@@ -186,6 +204,10 @@ public class Office extends AbstractPersistable<Long> {
 
     public String getName() {
         return this.name;
+    }
+    
+    public String getAddress() {
+        return this.address;
     }
 
     public String getHierarchy() {
