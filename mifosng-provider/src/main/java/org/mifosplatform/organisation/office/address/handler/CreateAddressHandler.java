@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 @Service
-@CommandType(entity = "Address", action = "CREATE")
+@CommandType(entity = "ADDRESS", action = "CREATE")
 public class CreateAddressHandler implements NewCommandSourceHandler{
-  
+    
 
       
         private final AddressWritePlatformService addressWritePlatformService;

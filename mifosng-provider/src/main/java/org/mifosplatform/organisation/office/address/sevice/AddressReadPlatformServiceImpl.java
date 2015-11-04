@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-
+import org.springframework.stereotype.Service;
+// add @ services spring mark anotation used by spring to identify bean that need to manage
+@Service
 public class AddressReadPlatformServiceImpl implements AddressReadPlatformService {
 
     private final JdbcTemplate jdbcTemplate;
@@ -34,9 +36,9 @@ public class AddressReadPlatformServiceImpl implements AddressReadPlatformServic
     private static final class AddressMapper implements RowMapper<AddressData> {
 
         public String addressSchema() {
-            return " a.id as id, a.line_1 as line_1, "
+            return " a.id as id, a.line_1 as line_1,o.id as office_id, "
                     + " o.name as office_name, a.line_2 as line_2, a.city as city, a.state as state, a.type "
-                    + "from m_address a  JOIN m_office AS office ON a.office_id = o.id ";
+                    + "from m_address a  JOIN m_office AS o ON a.office_id = o.id ";
         }
 
         @Override

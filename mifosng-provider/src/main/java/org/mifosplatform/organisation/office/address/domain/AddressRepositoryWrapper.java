@@ -4,7 +4,8 @@ import org.mifosplatform.organisation.office.domain.*;
 import org.mifosplatform.organisation.office.address.domain.AddressRepository;
 import org.mifosplatform.organisation.office.exception.OfficeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.stereotype.Repository;
+@Repository
 public class AddressRepositoryWrapper {
     private final AddressRepository repository;
 

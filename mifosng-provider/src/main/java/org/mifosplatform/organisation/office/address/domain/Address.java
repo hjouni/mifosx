@@ -26,14 +26,14 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 public class Address extends AbstractPersistable<Long> {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "officeId")
+    @JoinColumn(name = "office_id")
     private Office office; //another property of Office cause the parent ID
 
  
-    @Column(name = "line1", nullable = false, length = 100) //hibernate property
+    @Column(name = "line_1", nullable = false, length = 100) //hibernate property
     private String line1;
     
-    @Column(name = "line2", nullable = false, length = 100) //hibernate property
+    @Column(name = "line_2", nullable = false, length = 100) //hibernate property
     private String line2;
     
     @Column(name = "city", nullable = false, length = 100) //hibernate property
